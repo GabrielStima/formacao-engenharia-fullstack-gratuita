@@ -40,8 +40,8 @@ A formação possui **28 unidades curriculares**, numeradas de 00 a 25, com os d
 
 | Módulo | Tema | Foco de Aprendizado | Status |
 | :---: | :--- | :--- | :---: |
-| **00** | [☕ Introdução](modulos/00-introducao-e-metodo-de-estudo/) | Como usar a formação, ter consistência de estudos e aproveitar a IA para aprender. | `Auditada` |
-| **01** | [🌐 Fundamentos Web](modulos/01-fundamentos-da-internet-e-web/) | Internet, protocolos HTTP/HTTPS, roteamento, DNS, browsers e fluxo de requisição. | `Auditada` |
+| **00** | [☕ Introdução](modulos/00-introducao-e-metodo-de-estudo/) | Como usar a formação, ter consistência de estudos e aproveitar a IA para aprender. | `Roteirizada` |
+| **01** | [🌐 Fundamentos Web](modulos/01-fundamentos-da-internet-e-web/) | Internet, protocolos HTTP/HTTPS, roteamento, DNS, browsers e fluxo de requisição. | `Roteirizada` |
 | **02** | [🎨 Frontend Essencial](modulos/02-frontend-essencial/) | HTML5, CSS3 sem frameworks, cascata, layout (Flex/Grid), acessibilidade e responsividade. | `Auditada` |
 | **03** | [📘 TypeScript](modulos/03-programacao-com-typescript/) | JavaScript moderno, TypeScript, tipagem estática, interfaces, generics e assincronismo. | `Auditada` |
 | **04** | [📐 Algoritmos](modulos/04-algoritmos-e-estruturas-de-dados/) | Complexidade de algoritmos (Big-O), estruturas de dados essenciais e árvores. | `Auditada` |

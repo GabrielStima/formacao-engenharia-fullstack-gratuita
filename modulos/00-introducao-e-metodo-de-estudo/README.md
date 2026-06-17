@@ -63,10 +63,10 @@ modulos/
 
 | Ordem | Aula | Tipo | Status |
 | --- | --- | --- | --- |
-| 00.00 | [Introdução e visão geral do projeto](00.00-introducao-e-visao-geral-do-projeto.md) | Guarda-chuva | Auditada |
-| 00.01 | [Método de estudo](00.01-metodo-de-estudo.md) | Específica | Auditada |
-| 00.02 | [Revisão Espaçada e Retenção de Longo Prazo](00.02-revisao-espacada-e-retencao-de-longo-prazo.md) | Específica | Auditada |
-| 00.03 | [Metacognição e Ilusão de Competência](00.03-metacognicao-e-ilusao-de-competencia.md) | Específica | Auditada |
+| 00.00 | [Introdução e visão geral do projeto](00.00-introducao-e-visao-geral-do-projeto.md) | Guarda-chuva | Roteirizada |
+| 00.01 | [Método de estudo](00.01-metodo-de-estudo.md) | Específica | Roteirizada |
+| 00.02 | [Revisão Espaçada e Retenção de Longo Prazo](00.02-revisao-espacada-e-retencao-de-longo-prazo.md) | Específica | Roteirizada |
+| 00.03 | [Metacognição e Ilusão de Competência](00.03-metacognicao-e-ilusao-de-competencia.md) | Específica | Roteirizada |
 
 ## Como Usar Este Módulo
 

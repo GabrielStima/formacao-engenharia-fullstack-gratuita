@@ -8,6 +8,7 @@ Esta atividade reúne o que você praticou durante o módulo. Antes de começar,
 2. [Encontrando o Destino](02-encontrando-o-destino.md)
 3. [Lendo Uma Troca HTTP](03-lendo-uma-troca-http.md)
 4. [Separando Responsabilidades](04-separando-responsabilidades.md)
+5. [Investigando Cache](05-investigando-cache.md)
 
 ## Cenário
 
