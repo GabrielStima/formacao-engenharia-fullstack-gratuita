@@ -19,8 +19,13 @@
 ---
 
 > [!NOTE]
-> **A Formação Engenharia FullStack Gratuita nasce da ideia de estudar ensinando.** 
+> **A Formação Engenharia FullStack Gratuita nasce da ideia de estudar com a IA.** 
 > A proposta é criar uma trilha longa, sequencial e 100% prática, em que cada aula transforma um assunto complexo em um material claro, consultável e útil tanto para quem acompanha a formação completa quanto para quem busca um tema específico.
+
+---
+
+> [!WARNING]
+> Para mais informações sobre o curso acessar [GabrielStima | Dev](https://www.youtube.com/@gabrielstimadev)
 
 ---
 
