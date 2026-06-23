@@ -1,5 +1,5 @@
 import { createServer } from 'node:http';
-import { readFile, stat } from 'node:fs/promises';
+import { readFile, realpath, stat } from 'node:fs/promises';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 
@@ -21,10 +21,27 @@ export function safeFilePath(rootDirectory, requestPath) {
   const filePath = path.resolve(root, `.${decodeURIComponent(requestPath)}`);
 
   if (filePath !== root && !filePath.startsWith(`${root}${path.sep}`)) {
-    throw new Error('Caminho inválido');
+    const error = new Error('Caminho inválido');
+    error.code = 'INVALID_REQUEST_PATH';
+    throw error;
   }
 
   return filePath;
+}
+
+export async function safeRealFilePath(rootDirectory, filePath) {
+  const [root, target] = await Promise.all([
+    realpath(rootDirectory),
+    realpath(filePath),
+  ]);
+
+  if (target !== root && !target.startsWith(`${root}${path.sep}`)) {
+    const error = new Error('Caminho inválido');
+    error.code = 'OUTSIDE_ROOT';
+    throw error;
+  }
+
+  return target;
 }
 
 export function startServer(directory = 'dist', port = 4173) {
@@ -38,18 +55,29 @@ export function startServer(directory = 'dist', port = 4173) {
         filePath = path.join(filePath, 'index.html');
       }
 
+      filePath = await safeRealFilePath(root, filePath);
       const content = await readFile(filePath);
       response.writeHead(200, { 'Content-Type': contentTypeFor(filePath) });
       response.end(content);
     } catch (error) {
-      if (error?.code === 'ENOENT' || error?.code === 'ENOTDIR') {
+      if (
+        error?.code === 'ENOENT'
+        || error?.code === 'ENOTDIR'
+        || error?.code === 'OUTSIDE_ROOT'
+      ) {
         response.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });
         response.end('Não encontrado');
         return;
       }
 
-      response.writeHead(400, { 'Content-Type': 'text/plain; charset=utf-8' });
-      response.end(error instanceof Error ? error.message : 'Requisição inválida');
+      if (error instanceof URIError || error?.code === 'INVALID_REQUEST_PATH') {
+        response.writeHead(400, { 'Content-Type': 'text/plain; charset=utf-8' });
+        response.end('Requisição inválida');
+        return;
+      }
+
+      response.writeHead(500, { 'Content-Type': 'text/plain; charset=utf-8' });
+      response.end('Erro interno');
     }
   });
 
