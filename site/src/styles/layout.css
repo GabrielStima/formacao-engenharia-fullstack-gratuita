@@ -303,6 +303,174 @@ select:disabled {
   font-size: 0.8rem;
 }
 
+.phase-heading > p:not(.eyebrow) {
+  color: var(--muted);
+}
+
+.phase-heading .phase-progress {
+  margin: 1.35rem 0 0;
+  color: var(--text);
+  font-weight: 800;
+}
+
+.course-track {
+  position: relative;
+  display: grid;
+  max-width: 54rem;
+  gap: 1.25rem;
+  margin: 2.5rem auto 0;
+}
+
+.course-track::before {
+  position: absolute;
+  top: -2.5rem;
+  bottom: 0;
+  left: 50%;
+  z-index: -1;
+  width: 2px;
+  background: linear-gradient(var(--accent), var(--border) 35%, transparent);
+  content: "";
+  transform: translateX(-50%);
+}
+
+.module-card {
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: 0 14px 40px rgb(0 0 0 / 16%);
+}
+
+.module-card[data-state="partial"] {
+  border-color: var(--accent);
+}
+
+.module-card[data-state="done"] {
+  border-color: var(--done);
+}
+
+.module-card > summary {
+  display: flex;
+  min-height: 4rem;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  background: linear-gradient(145deg, var(--surface-raised), var(--surface));
+  cursor: pointer;
+  list-style: none;
+}
+
+.module-card > summary::-webkit-details-marker {
+  display: none;
+}
+
+.module-card > summary::before {
+  flex: 0 0 auto;
+  color: var(--accent);
+  content: "+";
+  font-size: 1.25rem;
+  font-weight: 500;
+}
+
+.module-card[open] > summary::before {
+  content: "−";
+}
+
+.module-card > summary strong {
+  flex: 1;
+}
+
+.module-card > summary span {
+  min-width: 3.25rem;
+  padding: 0.3rem 0.55rem;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  font-size: 0.75rem;
+  font-weight: 900;
+  text-align: center;
+}
+
+.module-card > p {
+  margin: 0;
+  padding: 1.1rem 1.25rem 0.5rem;
+  color: var(--muted);
+}
+
+.lesson-list {
+  display: grid;
+  gap: 0.55rem;
+  margin: 0;
+  padding: 0.75rem 1.25rem 1.25rem;
+  list-style: none;
+}
+
+.lesson-button {
+  display: flex;
+  width: 100%;
+  min-height: 3.4rem;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.7rem 0.85rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface-raised);
+  color: var(--text);
+  text-align: left;
+}
+
+.lesson-button:hover {
+  border-color: var(--border-strong);
+  background: var(--surface-soft);
+}
+
+.lesson-button[aria-pressed="true"] {
+  border-color: var(--done);
+}
+
+.lesson-button[aria-pressed="true"] > span {
+  color: var(--done);
+}
+
+.lesson-button small {
+  flex: 0 0 auto;
+  color: var(--muted);
+  font-size: 0.72rem;
+}
+
+.exercise-group {
+  margin: 0 1.25rem 1.25rem;
+  padding: 0.85rem;
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius-sm);
+}
+
+.exercise-group > summary {
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 800;
+}
+
+.exercise-group ul {
+  display: grid;
+  gap: 0.4rem;
+  margin: 0.75rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.exercise-group button {
+  width: 100%;
+  padding: 0.55rem 0.7rem;
+  border: 0;
+  border-radius: 0.4rem;
+  background: var(--surface-raised);
+  color: var(--text);
+  text-align: left;
+}
+
 .load-error,
 .noscript-message {
   max-width: 42rem;
@@ -468,6 +636,15 @@ dialog::backdrop {
 
   .phase-heading {
     padding: 2rem 1rem;
+  }
+
+  .module-card > summary,
+  .lesson-button {
+    align-items: flex-start;
+  }
+
+  .lesson-button {
+    display: grid;
   }
 
   dialog {

@@ -1,55 +1,22 @@
 import { loadCatalog } from './catalog-api.js';
+import { renderPhase } from './map-view.js';
+import { createProgressStore, progressFor } from './progress-store.js';
+import { readRoute, replaceRoute } from './router.js';
 
 const map = document.querySelector('#course-map');
+const phaseSelect = document.querySelector('#phase-select');
+const previousPhaseButton = document.querySelector('#previous-phase');
+const nextPhaseButton = document.querySelector('#next-phase');
+const overallProgress = document.querySelector('#overall-progress');
 
 function appendTextElement(parent, tagName, text, className) {
   const element = document.createElement(tagName);
   element.textContent = text;
-  if (className) element.className = className;
+  if (className) {
+    element.className = className;
+  }
   parent.append(element);
   return element;
-}
-
-function renderCatalogSummary(catalog) {
-  const phaseSelect = document.querySelector('#phase-select');
-  const phaseOption = document.createElement('option');
-  phaseOption.textContent = `${catalog.phases.length} fases disponíveis`;
-  phaseSelect.replaceChildren(phaseOption);
-  phaseSelect.disabled = true;
-  document.querySelector('#previous-phase').disabled = true;
-  document.querySelector('#next-phase').disabled = true;
-
-  const summary = document.createElement('div');
-  summary.className = 'phase-heading';
-  appendTextElement(
-    summary,
-    'p',
-    'A FORMAÇÃO ESTÁ PRONTA PARA EXPLORAR',
-    'eyebrow',
-  );
-  appendTextElement(
-    summary,
-    'h2',
-    `${catalog.counts.modules} módulos conectados em uma única jornada`,
-  );
-
-  const stats = document.createElement('div');
-  stats.className = 'phase-stats';
-  for (const [value, label] of [
-    [catalog.counts.lessons, 'aulas principais'],
-    [catalog.counts.exercises, 'exercícios e atividades'],
-  ]) {
-    const stat = document.createElement('div');
-    stat.className = 'phase-stat';
-    appendTextElement(stat, 'strong', String(value));
-    appendTextElement(stat, 'span', label);
-    stats.append(stat);
-  }
-  summary.append(stats);
-
-  map.replaceChildren(summary);
-  map.dataset.catalogLoaded = 'true';
-  map.setAttribute('aria-busy', 'false');
 }
 
 function renderLoadError(error) {
@@ -64,13 +31,72 @@ function renderLoadError(error) {
   );
   const retry = appendTextElement(section, 'button', 'Tentar novamente');
   retry.type = 'button';
-  retry.addEventListener('click', () => location.reload());
+  retry.addEventListener('click', () => globalThis.location.reload());
+
+  const unavailableOption = document.createElement('option');
+  unavailableOption.textContent = 'Formação indisponível';
+  phaseSelect.replaceChildren(unavailableOption);
+  phaseSelect.disabled = true;
+  previousPhaseButton.disabled = true;
+  nextPhaseButton.disabled = true;
   map.replaceChildren(section);
   map.setAttribute('aria-busy', 'false');
 }
 
 try {
-  renderCatalogSummary(await loadCatalog());
+  const catalog = await loadCatalog();
+  const store = createProgressStore();
+  const allLessonIds = catalog.phases.flatMap((phase) => (
+    phase.modules.flatMap((module) => module.lessons.map(({ id }) => id))
+  ));
+  const requestedPhaseIndex = catalog.phases.findIndex(({ id }) => id === readRoute().phaseId);
+  let phaseIndex = Math.max(0, requestedPhaseIndex);
+
+  const options = catalog.phases.map((phase) => {
+    const option = document.createElement('option');
+    option.value = phase.id;
+    option.textContent = `Fase ${phase.number}: ${phase.title}`;
+    return option;
+  });
+  phaseSelect.replaceChildren(...options);
+  phaseSelect.disabled = false;
+
+  function render() {
+    const phase = catalog.phases[phaseIndex];
+    const completedLessonIds = store.state.completedLessonIds;
+
+    phaseSelect.value = phase.id;
+    previousPhaseButton.disabled = phaseIndex === 0;
+    nextPhaseButton.disabled = phaseIndex === catalog.phases.length - 1;
+    renderPhase(map, phase, completedLessonIds);
+    overallProgress.value = `${progressFor(completedLessonIds, allLessonIds).percent}%`;
+    map.dataset.catalogLoaded = 'true';
+    map.setAttribute('aria-busy', 'false');
+
+    const route = readRoute();
+    replaceRoute({
+      phaseId: phase.id,
+      lessonSlug: route.lessonSlug,
+      exerciseSlug: route.exerciseSlug,
+    });
+  }
+
+  phaseSelect.addEventListener('change', () => {
+    phaseIndex = catalog.phases.findIndex(({ id }) => id === phaseSelect.value);
+    render();
+  });
+
+  previousPhaseButton.addEventListener('click', () => {
+    phaseIndex = Math.max(0, phaseIndex - 1);
+    render();
+  });
+
+  nextPhaseButton.addEventListener('click', () => {
+    phaseIndex = Math.min(catalog.phases.length - 1, phaseIndex + 1);
+    render();
+  });
+
+  render();
 } catch (error) {
   renderLoadError(error);
 }
