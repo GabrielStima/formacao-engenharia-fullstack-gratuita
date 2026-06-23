@@ -1,0 +1,115 @@
+.lesson-shell {
+  display: grid;
+  height: min(90dvh, 60rem);
+  grid-template-rows: auto 1fr auto;
+}
+
+.lesson-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.lesson-body {
+  display: grid;
+  min-height: 0;
+  grid-template-columns: 14rem 1fr;
+}
+
+.lesson-toc {
+  overflow: auto;
+  padding: 1rem;
+  border-right: 1px solid var(--border);
+}
+
+.lesson-toc a {
+  display: block;
+  padding: 0.35rem;
+  color: var(--muted);
+}
+
+.lesson-content {
+  overflow: auto;
+  padding: 2rem max(1rem, calc((100% - 52rem) / 2));
+  line-height: 1.75;
+}
+
+.lesson-content h1,
+.lesson-content h2,
+.lesson-content h3 {
+  line-height: 1.2;
+  letter-spacing: -0.025em;
+}
+
+.lesson-content img {
+  max-width: 100%;
+  height: auto;
+}
+
+.lesson-content pre {
+  overflow: auto;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg-deep);
+}
+
+.lesson-content :not(pre) > code {
+  padding: 0.15rem 0.35rem;
+  border-radius: 0.3rem;
+  background: var(--surface-soft);
+}
+
+.lesson-content table {
+  display: block;
+  max-width: 100%;
+  overflow: auto;
+  border-collapse: collapse;
+}
+
+.lesson-content th,
+.lesson-content td {
+  padding: 0.55rem 0.7rem;
+  border: 1px solid var(--border);
+}
+
+.markdown-alert {
+  margin-block: 1.25rem;
+  padding: 1rem;
+  border-left: 4px solid var(--accent);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  background: var(--surface-raised);
+}
+
+.markdown-alert-warning {
+  border-color: var(--focus);
+}
+
+.heading-anchor {
+  margin-left: 0.5rem;
+  color: var(--muted);
+  font-size: 0.75em;
+  text-decoration: none;
+}
+
+@media (max-width: 48rem) {
+  .lesson-body {
+    display: block;
+    overflow: auto;
+  }
+
+  .lesson-toc {
+    border-right: 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .lesson-content {
+    overflow: visible;
+  }
+}

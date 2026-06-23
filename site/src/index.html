@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="dark">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Mapa visual gratuito da Formação Engenharia Fullstack.">
+    <meta name="theme-color" content="#0b1020">
+    <title>Mapa da Formação Engenharia Fullstack</title>
+    <link rel="stylesheet" href="styles/tokens.css">
+    <link rel="stylesheet" href="styles/layout.css">
+    <link rel="stylesheet" href="styles/lesson.css">
+    <script type="module" src="js/app.js"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#course-map">Pular para o mapa</a>
+
+    <header class="site-header">
+      <div class="header-inner">
+        <a class="brand" href="./" aria-label="Início do mapa da formação">
+          <span class="brand-mark" aria-hidden="true">{ }</span>
+          <span>Formação Fullstack</span>
+        </a>
+
+        <nav class="global-actions" aria-label="Ações globais">
+          <button class="utility-button" id="search-button" type="button">
+            <span aria-hidden="true">⌕</span>
+            <span class="action-label">Buscar</span>
+          </button>
+          <output class="progress-pill" id="overall-progress" aria-label="Progresso geral">0%</output>
+          <button class="utility-button icon-button" id="theme-button" type="button" aria-label="Alternar tema">◐</button>
+          <button class="utility-button" id="settings-button" type="button">
+            <span aria-hidden="true">↥</span>
+            <span class="action-label">Progresso</span>
+          </button>
+          <a class="utility-link" href="https://github.com/GabrielStima/formacao-engenharia-fullstack-gratuita" target="_blank" rel="noopener noreferrer">GitHub</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero" aria-labelledby="page-title">
+        <div class="hero-copy">
+          <p class="eyebrow">GUIA VISUAL · GRATUITO E ABERTO</p>
+          <h1 id="page-title">Sua trilha de engenharia fullstack</h1>
+          <p class="hero-description">Da primeira requisição web à arquitetura, cloud e IA. Siga a ordem sugerida ou consulte qualquer aula — sem bloqueios e sem criar uma conta.</p>
+        </div>
+        <div class="hero-note">
+          <span class="note-icon" aria-hidden="true">◎</span>
+          <p><strong>Você decide o ritmo.</strong> O progresso será salvo somente neste navegador e poderá ser exportado quando quiser.</p>
+        </div>
+      </section>
+
+      <section class="phase-toolbar" aria-label="Navegação entre fases">
+        <button id="previous-phase" type="button">← <span>Fase anterior</span></button>
+        <label for="phase-select">
+          <span>Explorar fase</span>
+          <select id="phase-select" aria-label="Selecionar fase">
+            <option>Carregando formação…</option>
+          </select>
+        </label>
+        <button id="next-phase" type="button"><span>Próxima fase</span> →</button>
+      </section>
+
+      <section id="course-map" aria-live="polite" aria-busy="true">
+        <div class="loading-state" aria-hidden="true">
+          <span></span><span></span><span></span>
+        </div>
+        <p class="loading-label">Preparando o mapa da formação…</p>
+      </section>
+
+      <noscript>
+        <section class="noscript-message" role="alert">
+          <h2>JavaScript é necessário para o mapa interativo</h2>
+          <p>O conteúdo continua disponível no repositório público do GitHub.</p>
+        </section>
+      </noscript>
+    </main>
+
+    <footer class="site-footer">
+      <p><strong>Formação Engenharia Fullstack Gratuita</strong><br>Conteúdo aberto para quem quer aprender construindo.</p>
+      <p>Seu progresso fica no seu dispositivo.<br><a href="https://github.com/GabrielStima/formacao-engenharia-fullstack-gratuita" target="_blank" rel="noopener noreferrer">Repositório, autoria e licença ↗</a></p>
+    </footer>
+
+    <dialog id="lesson-dialog" aria-labelledby="lesson-title">
+      <div id="lesson-dialog-content"></div>
+    </dialog>
+
+    <dialog id="search-dialog" aria-labelledby="search-title">
+      <div class="dialog-placeholder">
+        <h2 id="search-title">Buscar no curso</h2>
+        <label for="search-input">Título ou código da aula</label>
+        <input id="search-input" type="search" autocomplete="off" placeholder="Ex.: DNS ou 01.04">
+        <div id="search-results"></div>
+        <button type="button" data-close-dialog>Fechar</button>
+      </div>
+    </dialog>
+
+    <dialog id="settings-dialog" aria-labelledby="settings-title">
+      <div id="settings-dialog-content">
+        <h2 id="settings-title">Seu progresso</h2>
+      </div>
+    </dialog>
+
+    <div id="toast" role="status" aria-live="polite"></div>
+  </body>
+</html>
