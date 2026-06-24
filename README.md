@@ -27,6 +27,9 @@
 > [!WARNING]
 > Para mais informações sobre o curso acessar [GabrielStima | Dev](https://www.youtube.com/@gabrielstimadev)
 
+> [!TIP]
+> Prefere uma experiência visual? Acesse o **[Mapa interativo da formação](https://gabrielstima.github.io/formacao-engenharia-fullstack-gratuita/)** para navegar pelas aulas e acompanhar seu progresso sem criar uma conta.
+
 ---
 
 ## 🧠 Foco em Maturidade Técnica

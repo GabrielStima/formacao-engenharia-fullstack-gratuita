@@ -1,6 +1,10 @@
 interno/
-.github/
 .kimi-code/
 .agents/
 ._*
-prompt.md
+.superpowers/
+docs/
+site/node_modules/
+site/dist/
+site/playwright-report/
+site/test-results/
