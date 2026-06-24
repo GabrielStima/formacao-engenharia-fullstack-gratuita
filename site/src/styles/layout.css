@@ -534,8 +534,105 @@ dialog::backdrop {
   background: var(--bg);
 }
 
+.search-result-list {
+  display: grid;
+  max-height: min(28rem, 55dvh);
+  gap: 0.45rem;
+  margin: 0;
+  padding: 0;
+  overflow: auto;
+  list-style: none;
+}
+
+.search-result-list button {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface-raised);
+  color: var(--text);
+  text-align: left;
+}
+
+.search-result-list button:hover {
+  border-color: var(--border-strong);
+  background: var(--surface-soft);
+}
+
+.search-result-list small {
+  color: var(--muted);
+}
+
+.settings-shell {
+  display: grid;
+  gap: 1rem;
+  padding: 1.5rem;
+}
+
+.settings-shell h2,
+.settings-shell p {
+  margin: 0;
+}
+
+.settings-shell p {
+  color: var(--muted);
+}
+
+.settings-actions {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.settings-shell button,
+.file-button {
+  display: inline-flex;
+  min-height: 2.75rem;
+  align-items: center;
+  justify-content: center;
+  padding: 0.65rem 0.9rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface-raised);
+  color: var(--text);
+  cursor: pointer;
+  font: inherit;
+  text-align: center;
+}
+
+.settings-shell button:hover,
+.file-button:hover {
+  border-color: var(--border-strong);
+  background: var(--surface-soft);
+}
+
+.file-button input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+}
+
 #toast:empty {
   display: none;
+}
+
+#toast:not(:empty) {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 50;
+  max-width: min(26rem, calc(100% - 2rem));
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--surface-raised);
+  box-shadow: var(--shadow);
 }
 
 .site-footer {
@@ -659,5 +756,9 @@ dialog::backdrop {
 
   .site-footer {
     display: grid;
+  }
+
+  .settings-actions {
+    grid-template-columns: 1fr;
   }
 }

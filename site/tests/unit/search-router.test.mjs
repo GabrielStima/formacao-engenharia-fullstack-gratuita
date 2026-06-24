@@ -1,7 +1,11 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 
-import { createSearchIndex, searchCatalog } from '../../src/js/search.js';
+import {
+  createSearchIndex,
+  searchCatalog,
+  searchResultsMarkup,
+} from '../../src/js/search.js';
 import {
   onRouteChange,
   pushRoute,
@@ -46,6 +50,29 @@ test('busca vazia não apresenta resultados', () => {
   const index = createSearchIndex(catalog);
 
   assert.deepEqual(searchCatalog(index, '   '), []);
+});
+
+test('renderiza resultados escapando títulos e atributos do catálogo', () => {
+  const html = searchResultsMarkup([{
+    type: 'lesson',
+    phaseId: 'fase-1" autofocus="true',
+    moduleId: '01',
+    id: '01.04',
+    slug: 'dns" onclick="alert(1)',
+    title: '<script>DNS</script>',
+  }]);
+
+  assert.match(html, /data-result-type="lesson"/);
+  assert.match(html, /data-lesson-slug="dns&quot; onclick=&quot;alert\(1\)"/);
+  assert.match(html, /01\.04 · &lt;script&gt;DNS&lt;\/script&gt;/);
+  assert.doesNotMatch(html, /<script>|onclick="alert/);
+});
+
+test('explica quando a busca não encontra resultados', () => {
+  assert.equal(
+    searchResultsMarkup([]),
+    '<p>Nenhum resultado. Tente outro código ou termo.</p>',
+  );
 });
 
 test('lê a rota compartilhável e representa parâmetros ausentes como nulos', () => {

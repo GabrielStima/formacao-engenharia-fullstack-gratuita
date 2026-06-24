@@ -3,6 +3,12 @@ import { createLessonDialog } from './lesson-dialog.js';
 import { renderPhase } from './map-view.js';
 import { createProgressStore, progressFor } from './progress-store.js';
 import {
+  createSearchIndex,
+  searchCatalog,
+  searchResultsMarkup,
+} from './search.js';
+import { bindSettings } from './settings-dialog.js';
+import {
   onRouteChange,
   pushRoute,
   readRoute,
@@ -76,6 +82,22 @@ try {
   ));
   const requestedPhaseIndex = catalog.phases.findIndex(({ id }) => id === readRoute().phaseId);
   let phaseIndex = Math.max(0, requestedPhaseIndex);
+
+  const themeButton = document.querySelector('#theme-button');
+  function applyTheme(theme) {
+    document.documentElement.dataset.theme = theme;
+    themeButton.setAttribute(
+      'aria-label',
+      theme === 'dark' ? 'Ativar tema claro' : 'Ativar tema escuro',
+    );
+    themeButton.setAttribute('aria-pressed', String(theme === 'light'));
+  }
+  applyTheme(store.state.theme);
+  themeButton.addEventListener('click', () => {
+    const theme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+    applyTheme(theme);
+    store.setTheme(theme);
+  });
 
   const options = catalog.phases.map((phase) => {
     const option = document.createElement('option');
@@ -151,6 +173,53 @@ try {
     replaceRoute({ phaseId: catalog.phases[phaseIndex].id });
     render();
   }
+
+  const searchDialog = document.querySelector('#search-dialog');
+  const searchInput = document.querySelector('#search-input');
+  const searchResults = document.querySelector('#search-results');
+  const searchIndex = createSearchIndex(catalog);
+
+  document.querySelector('#search-button').addEventListener('click', () => {
+    searchDialog.showModal();
+    searchInput.focus();
+  });
+  searchDialog.querySelector('[data-close-dialog]').addEventListener('click', () => {
+    searchDialog.close();
+  });
+  searchInput.addEventListener('input', () => {
+    searchResults.innerHTML = searchResultsMarkup(searchCatalog(searchIndex, searchInput.value));
+  });
+  searchResults.addEventListener('click', (event) => {
+    const result = event.target.closest?.('[data-result-type]');
+    if (!result) {
+      return;
+    }
+
+    searchDialog.close();
+    if (result.dataset.lessonSlug) {
+      openContent('lesson', result.dataset.lessonSlug);
+      return;
+    }
+
+    const nextPhaseIndex = catalog.phases.findIndex(({ id }) => id === result.dataset.phaseId);
+    showPhase(nextPhaseIndex);
+    const moduleCard = [...map.querySelectorAll('[data-module-id]')]
+      .find((element) => element.dataset.moduleId === result.dataset.moduleId);
+    moduleCard?.setAttribute('open', '');
+    moduleCard?.querySelector('summary')?.focus();
+  });
+
+  const settingsDialog = document.querySelector('#settings-dialog');
+  bindSettings({
+    dialog: settingsDialog,
+    store,
+    knownIds: new Set(allLessonIds),
+    onChange: render,
+    notify,
+  });
+  document.querySelector('#settings-button').addEventListener('click', () => {
+    settingsDialog.showModal();
+  });
 
   phaseSelect.addEventListener('change', () => {
     showPhase(catalog.phases.findIndex(({ id }) => id === phaseSelect.value));

@@ -11,6 +11,22 @@ function messageForIgnored(ids) {
   return `Progresso importado. ${ids.length} ${label}.`;
 }
 
+export function createProgressDownload(json, {
+  documentRef = globalThis.document,
+  urlApi = globalThis.URL,
+  BlobClass = globalThis.Blob,
+  schedule = globalThis.setTimeout,
+} = {}) {
+  const url = urlApi.createObjectURL(new BlobClass([json], { type: 'application/json' }));
+  const link = documentRef.createElement('a');
+  link.href = url;
+  link.download = BACKUP_FILENAME;
+  documentRef.body.append(link);
+  link.click();
+  link.remove();
+  schedule(() => urlApi.revokeObjectURL(url), 0);
+}
+
 export function bindSettings({ dialog, store, knownIds, onChange, notify }) {
   const content = dialog.querySelector('#settings-dialog-content');
 
@@ -31,12 +47,7 @@ export function bindSettings({ dialog, store, knownIds, onChange, notify }) {
   `;
 
   content.querySelector('[data-export]').addEventListener('click', () => {
-    const url = URL.createObjectURL(new Blob([store.export()], { type: 'application/json' }));
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = BACKUP_FILENAME;
-    link.click();
-    setTimeout(() => URL.revokeObjectURL(url), 0);
+    createProgressDownload(store.export());
   });
 
   content.querySelector('[data-import]').addEventListener('change', async (event) => {

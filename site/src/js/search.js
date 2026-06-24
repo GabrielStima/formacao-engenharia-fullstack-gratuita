@@ -5,6 +5,16 @@ function normalizeText(value) {
     .toLowerCase();
 }
 
+function escapeHtml(value) {
+  return String(value).replace(/[&<>"']/g, (character) => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;',
+  })[character]);
+}
+
 export function createSearchIndex(catalog) {
   return catalog.phases.flatMap((phase) => phase.modules.flatMap((module) => [
     {
@@ -36,4 +46,29 @@ export function searchCatalog(index, query) {
   return index
     .filter((item) => terms.every((term) => item.haystack.includes(term)))
     .slice(0, 30);
+}
+
+export function searchResultsMarkup(results) {
+  if (results.length === 0) {
+    return '<p>Nenhum resultado. Tente outro código ou termo.</p>';
+  }
+
+  return `
+    <ul class="search-result-list">
+      ${results.map((item) => `
+        <li>
+          <button
+            type="button"
+            data-result-type="${escapeHtml(item.type)}"
+            data-phase-id="${escapeHtml(item.phaseId)}"
+            data-module-id="${escapeHtml(item.moduleId)}"
+            ${item.slug ? `data-lesson-slug="${escapeHtml(item.slug)}"` : ''}
+          >
+            <span>${escapeHtml(item.type === 'lesson' ? item.id : item.moduleId)} · ${escapeHtml(item.title)}</span>
+            <small>${item.type === 'lesson' ? 'Aula' : 'Módulo'}</small>
+          </button>
+        </li>
+      `).join('')}
+    </ul>
+  `;
 }
